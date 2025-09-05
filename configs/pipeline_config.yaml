@@ -1,0 +1,67 @@
+# AutoPatternChecker Pipeline Configuration
+
+# Data processing
+data:
+  key_columns: ['key_part1', 'key_part2', 'key_part3']
+  value_column: 'value'
+  chunk_size: 10000
+  encoding: 'utf-8'
+
+# Pattern profiling
+profiling:
+  min_signature_frequency: 5
+  rare_signature_pct_threshold: 1.0
+
+# Clustering
+clustering:
+  tfidf_ngram_range: [2, 4]
+  tfidf_max_features: 2000
+  tfidf_min_df: 1
+  tfidf_max_df: 0.95
+  hdbscan_min_cluster_size: 5
+  hdbscan_min_samples: 2
+  kmeans_n_clusters: 8
+  use_embeddings: true
+
+# Embeddings
+embeddings:
+  model: 'all-MiniLM-L6-v2'  # or 'all-mpnet-base-v2' for better quality
+  batch_size: 64
+  use_gpu: true
+
+# FAISS indexing
+indexing:
+  index_type: 'flat'  # 'flat', 'ivf', 'ivfpq'
+  metric: 'cosine'    # 'cosine', 'l2'
+  nlist: 100          # For IVF indices
+  m: 8                # For PQ
+  nbits: 8            # For PQ
+
+# Active learning
+active_learning:
+  review_batch_size: 100
+  auto_accept_confidence_threshold: 0.95
+  manual_review_threshold_lower: 0.6
+  manual_review_threshold_upper: 0.95
+  retrain_threshold: 10
+
+# API configuration
+api:
+  host: '0.0.0.0'
+  port: 8000
+  log_level: 'info'
+  cors_origins: ['*']
+
+# File paths
+paths:
+  data_dir: './data'
+  output_dir: './output'
+  indices_dir: './indices'
+  models_dir: './models'
+  logs_dir: './logs'
+
+# Logging
+logging:
+  level: 'INFO'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  file: './logs/autopatternchecker.log'
