@@ -1,0 +1,69 @@
+{
+  "embedding_models": {
+    "all-MiniLM-L6-v2": {
+      "name": "all-MiniLM-L6-v2",
+      "description": "Fast, lightweight model for general purpose embeddings",
+      "dimension": 384,
+      "max_sequence_length": 256,
+      "recommended_for": ["speed", "memory_efficiency"]
+    },
+    "all-mpnet-base-v2": {
+      "name": "all-mpnet-base-v2", 
+      "description": "High quality model for semantic similarity",
+      "dimension": 768,
+      "max_sequence_length": 512,
+      "recommended_for": ["accuracy", "semantic_quality"]
+    }
+  },
+  "clustering_algorithms": {
+    "hdbscan": {
+      "name": "HDBSCAN",
+      "description": "Hierarchical DBSCAN for variable density clustering",
+      "parameters": {
+        "min_cluster_size": 5,
+        "min_samples": 2,
+        "metric": "cosine"
+      },
+      "recommended_for": ["unknown_cluster_count", "variable_density"]
+    },
+    "kmeans": {
+      "name": "MiniBatchKMeans",
+      "description": "Fast k-means clustering for large datasets",
+      "parameters": {
+        "n_clusters": 8,
+        "n_init": 5,
+        "random_state": 42
+      },
+      "recommended_for": ["known_cluster_count", "speed"]
+    }
+  },
+  "faiss_indices": {
+    "flat": {
+      "name": "IndexFlatIP",
+      "description": "Exact similarity search using inner product",
+      "parameters": {
+        "metric": "cosine"
+      },
+      "recommended_for": ["small_datasets", "exact_search"]
+    },
+    "ivf": {
+      "name": "IndexIVFFlat",
+      "description": "Inverted file index for approximate search",
+      "parameters": {
+        "nlist": 100,
+        "metric": "l2"
+      },
+      "recommended_for": ["medium_datasets", "balanced_speed_accuracy"]
+    },
+    "ivfpq": {
+      "name": "IndexIVFPQ",
+      "description": "Product quantization for large scale search",
+      "parameters": {
+        "nlist": 100,
+        "m": 8,
+        "nbits": 8
+      },
+      "recommended_for": ["large_datasets", "memory_efficiency"]
+    }
+  }
+}
