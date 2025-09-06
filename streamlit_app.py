@@ -34,6 +34,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Configure for large file uploads
+st.set_option('server.maxUploadSize', 200)  # 200MB
+
 # Custom CSS
 st.markdown("""
 <style>
@@ -209,8 +212,37 @@ def show_data_upload_page():
     
     if uploaded_file is not None:
         try:
-            # Read the CSV file
-            df = pd.read_csv(uploaded_file)
+            # Check file size
+            file_size_mb = len(uploaded_file.getvalue()) / (1024 * 1024)
+            st.info(f"📁 File size: {file_size_mb:.1f} MB")
+            
+            # For large files, show progress
+            if file_size_mb > 50:
+                st.warning("⚠️ Large file detected. Processing may take a few minutes...")
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+            
+            # Read the CSV file with chunking for large files
+            if file_size_mb > 50:
+                status_text.text("Reading CSV file...")
+                progress_bar.progress(20)
+                
+                # Read in chunks for large files
+                chunk_size = 10000
+                chunks = []
+                uploaded_file.seek(0)  # Reset file pointer
+                
+                for i, chunk in enumerate(pd.read_csv(uploaded_file, chunksize=chunk_size)):
+                    chunks.append(chunk)
+                    progress = min(20 + (i * 5), 80)
+                    progress_bar.progress(progress)
+                    status_text.text(f"Reading chunk {i+1}...")
+                
+                df = pd.concat(chunks, ignore_index=True)
+                progress_bar.progress(100)
+                status_text.text("File reading completed!")
+            else:
+                df = pd.read_csv(uploaded_file)
             
             st.success(f"✅ File uploaded successfully! Shape: {df.shape}")
             
@@ -256,9 +288,24 @@ def show_data_upload_page():
                 if st.button("🔄 Process Data", type="primary"):
                     with st.spinner("Processing data..."):
                         try:
+                            # For large files, show progress
+                            if file_size_mb > 50:
+                                progress_bar = st.progress(0)
+                                status_text = st.empty()
+                                status_text.text("Starting data processing...")
+                            
                             # Process the data
                             ingester = DataIngester(st.session_state.config)
+                            
+                            if file_size_mb > 50:
+                                status_text.text("Processing data in chunks...")
+                                progress_bar.progress(30)
+                            
                             processed_df, key_stats_df = ingester.process_file(uploaded_file)
+                            
+                            if file_size_mb > 50:
+                                progress_bar.progress(100)
+                                status_text.text("Data processing completed!")
                             
                             # Store in session state
                             st.session_state.processed_data = processed_df
