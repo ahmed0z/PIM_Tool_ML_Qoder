@@ -19,6 +19,7 @@ from .clustering import ClusterAnalyzer
 from .embeddings import EmbeddingGenerator
 from .indexing import FAISSIndexer
 from .api import create_app
+from .training import ModelTrainer
 
 __all__ = [
     "DataIngester",
@@ -27,5 +28,6 @@ __all__ = [
     "ClusterAnalyzer",
     "EmbeddingGenerator",
     "FAISSIndexer",
-    "create_app"
+    "create_app",
+    "ModelTrainer"
 ]
