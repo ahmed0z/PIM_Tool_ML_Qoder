@@ -1,0 +1,61 @@
+{
+  "training_completion_date": "2025-09-07T04:40:00Z",
+  "dataset": {
+    "source_file": "Preset_251.csv",
+    "total_rows": 1035314,
+    "file_size_mb": 104
+  },
+  "training_results": {
+    "key_profiles": {
+      "count": 10472,
+      "file": "key_profiles.json",
+      "size_mb": 18.4
+    },
+    "normalization_rules": {
+      "count": 10472,
+      "file": "normalization_rules.json", 
+      "size_mb": 3.9
+    },
+    "clustering_models": {
+      "file": "clustering_models.pkl",
+      "size_mb": 6.1
+    },
+    "embeddings": {
+      "total_unique_values": 28449,
+      "embedding_dimension": 384,
+      "model_name": "all-MiniLM-L6-v2",
+      "file": "embedding_model/model_info.json",
+      "size_mb": 0.7
+    },
+    "faiss_indices": {
+      "total_indices": 2170,
+      "index_files": 2170,
+      "mapping_files": 2170,
+      "metadata_files": 2170,
+      "directory": "faiss_indices/",
+      "size_mb": 3.5,
+      "index_type": "flat",
+      "metric": "euclidean"
+    }
+  },
+  "technical_details": {
+    "embedding_batches_processed": 285,
+    "values_per_batch": 100,
+    "processing_method": "chunked_batch_processing",
+    "memory_optimization": "enabled"
+  },
+  "completion_status": {
+    "training_complete": true,
+    "all_models_saved": true,
+    "metadata_fixed": true,
+    "ready_for_production": true
+  },
+  "total_trained_models_size_mb": 32.6,
+  "notes": [
+    "Training completed successfully on full Preset_251.csv dataset",
+    "All 28,449 unique values embedded with 384-dimensional vectors",
+    "FAISS indices built for 2,170 unique composite keys",
+    "Metadata configuration files created and validated",
+    "System ready for pattern detection and duplicate identification"
+  ]
+}

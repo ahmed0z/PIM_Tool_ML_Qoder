@@ -20,14 +20,16 @@ from .embeddings import EmbeddingGenerator
 from .indexing import FAISSIndexer
 from .api import create_app
 from .training import ModelTrainer
+from .active_learning import ActiveLearningManager
 
 __all__ = [
     "DataIngester",
-    "PatternProfiler", 
+    "PatternProfiler",
     "NormalizationEngine",
     "ClusterAnalyzer",
     "EmbeddingGenerator",
     "FAISSIndexer",
     "create_app",
-    "ModelTrainer"
+    "ModelTrainer",
+    "ActiveLearningManager"
 ]

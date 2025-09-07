@@ -5,7 +5,7 @@ FastAPI service for AutoPatternChecker runtime validation.
 from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple
 import logging
 import json
 from datetime import datetime
@@ -317,7 +317,7 @@ async def check_semantic_duplicates(composite_key: str, value: str, profile: Dic
         return {"is_duplicate": False, "similarity": 0.0, "nearest_examples": []}
 
 def determine_verdict(format_match: bool, format_issues: List[str], 
-                     duplicate_info: Dict[str, Any], profile: Dict[str, Any]) -> Tuple[str, List[str], Optional[str], float]:
+                     duplicate_info: Dict[str, Any], profile: Dict[str, Any]) -> tuple[str, List[str], Optional[str], float]:
     """Determine the validation verdict based on all checks."""
     
     issues = format_issues.copy()

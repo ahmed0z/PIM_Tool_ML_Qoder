@@ -98,32 +98,45 @@ class DataIngester:
         
         return pd.DataFrame(stats)
     
-    def process_file(self, filepath: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def process_file(self, filepath_or_fileobj) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """
         Process a CSV file and return both the processed data and key statistics.
-        
+
+        Args:
+            filepath_or_fileobj: Either a file path string or a file-like object (e.g., Streamlit UploadedFile)
+
         Returns:
             Tuple of (processed_df, key_stats_df)
         """
-        logger.info(f"Processing file: {filepath}")
-        
+        logger.info(f"Processing file: {filepath_or_fileobj}")
+
+        # Handle different input types
+        if hasattr(filepath_or_fileobj, 'read'):
+            # File-like object (e.g., Streamlit UploadedFile)
+            return self._process_file_object(filepath_or_fileobj)
+        else:
+            # File path string
+            return self._process_file_path(filepath_or_fileobj)
+
+    def _process_file_path(self, filepath: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Process a file from a file path."""
         # Read and process in chunks
         all_chunks = []
         key_stats_list = []
-        
+
         for chunk in self.read_csv_streaming(filepath):
             # Create composite keys
             chunk = self.create_composite_keys(chunk)
-            
+
             # Compute statistics for this chunk
             chunk_stats = self.compute_key_statistics(chunk)
             key_stats_list.append(chunk_stats)
-            
+
             all_chunks.append(chunk)
-        
+
         # Combine all chunks
         processed_df = pd.concat(all_chunks, ignore_index=True)
-        
+
         # Combine and aggregate key statistics
         if key_stats_list:
             combined_stats = pd.concat(key_stats_list, ignore_index=True)
@@ -131,9 +144,37 @@ class DataIngester:
             key_stats_df = self._aggregate_key_statistics(combined_stats)
         else:
             key_stats_df = pd.DataFrame()
-        
+
         logger.info(f"Processed {len(processed_df)} rows with {len(key_stats_df)} unique keys")
         return processed_df, key_stats_df
+
+    def _process_file_object(self, file_obj) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Process a file from a file-like object (e.g., Streamlit UploadedFile)."""
+        try:
+            # Reset file pointer to beginning
+            file_obj.seek(0)
+
+            # Read the entire file into a DataFrame
+            # For file objects, we read all at once rather than chunking
+            df = pd.read_csv(file_obj, dtype=str, encoding=self.encoding)
+
+            # Validate schema
+            validation = self.validate_data_schema(df)
+            if not validation['is_valid']:
+                raise ValueError(f"Data validation failed: {validation['issues']}")
+
+            # Create composite keys
+            df = self.create_composite_keys(df)
+
+            # Compute statistics
+            key_stats_df = self.compute_key_statistics(df)
+
+            logger.info(f"Processed {len(df)} rows with {len(key_stats_df)} unique keys")
+            return df, key_stats_df
+
+        except Exception as e:
+            logger.error(f"Error processing file object: {e}")
+            raise
     
     def _aggregate_key_statistics(self, stats_df: pd.DataFrame) -> pd.DataFrame:
         """Aggregate key statistics across multiple chunks."""

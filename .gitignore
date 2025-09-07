@@ -176,3 +176,12 @@ Desktop.ini
 
 # Log files
 *.log
+
+# Large dataset files
+*.csv
+Preset_*.csv
+Preset_*.xlsx
+
+# Virtual environments
+autopatternchecker_env/
+*_env/

@@ -34,8 +34,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Configure for large file uploads
-st.set_option('server.maxUploadSize', 200)  # 200MB
+# Configure for large file uploads (set via command line: --server.maxUploadSize=200)
+# st.set_option('server.maxUploadSize', 200)  # 200MB - Cannot be set at runtime
 
 # Custom CSS
 st.markdown("""

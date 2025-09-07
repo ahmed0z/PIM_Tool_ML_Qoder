@@ -1,0 +1,19 @@
+{
+  "total_indices": 2170,
+  "total_index_files": 2170,
+  "total_mapping_files": 2170,
+  "total_metadata_files": 2170,
+  "sample_keys": [
+    "0.151\" (3.84mm)",
+    "2.3GHz, 2.4GHz, 2.7GHz, 2.9GHz",
+    "1.2k ~ 1.5k",
+    "Cobalt, Iron, Nickel",
+    "Polyamide (PA), Nylon, Fiberglass Reinforced",
+    "12V ~ 30V",
+    "0.094\" (2.39mm)",
+    "121\u00b0C Max",
+    "0.100\" (2.54mm) 1/10\"",
+    "3.07\" (77.98mm)"
+  ],
+  "directory_size_mb": 3.460573196411133
+}

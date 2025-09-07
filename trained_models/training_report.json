@@ -1,0 +1,49 @@
+{
+  "training_date": "2025-09-06T22:18:21.988095",
+  "data_file": "Preset_251_sample.csv",
+  "output_directory": "trained_models",
+  "config": {
+    "key_columns": [
+      "key_part1",
+      "key_part2",
+      "key_part3"
+    ],
+    "value_column": "value",
+    "chunk_size": 10000,
+    "encoding": "utf-8",
+    "min_signature_frequency": 2,
+    "rare_signature_pct_threshold": 5.0,
+    "tfidf_ngram_range": [
+      1,
+      3
+    ],
+    "tfidf_max_features": 500,
+    "hdbscan_min_cluster_size": 2,
+    "hdbscan_min_samples": 1,
+    "kmeans_n_clusters": 4,
+    "embedding_model": "all-MiniLM-L6-v2",
+    "embedding_batch_size": 32,
+    "use_embeddings": true,
+    "index_type": "flat",
+    "metric": "euclidean"
+  },
+  "data_stats": {
+    "total_rows": 10000,
+    "unique_keys": 117,
+    "processed_values": 573
+  },
+  "model_stats": {
+    "key_profiles": 117,
+    "normalization_rules": 117,
+    "clustering_models": 115,
+    "embedding_vectors": 573
+  },
+  "files_created": [
+    "key_profiles.json",
+    "normalization_rules.json",
+    "clustering_models.pkl",
+    "embedding_model/model_info.json",
+    "faiss_indices/main_index.faiss",
+    "training_report.json"
+  ]
+}
